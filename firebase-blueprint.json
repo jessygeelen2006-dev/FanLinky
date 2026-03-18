@@ -1,0 +1,74 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Creator profile and Mollie credentials.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "displayName": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "username": { "type": "string" },
+        "bio": { "type": "string" },
+        "mollieAccessToken": { "type": "string" },
+        "mollieRefreshToken": { "type": "string" },
+        "mollieExpiresAt": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "username"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "A digital product or service offered by a creator.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "oldPrice": { "type": "number" },
+        "currency": { "type": "string" },
+        "type": { "type": "string", "enum": ["digital_download", "coaching", "subscription"] },
+        "ribbon": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "fileUrl": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "creatorId", "title", "price", "currency", "type"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A transaction between a customer and a creator.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "productId": { "type": "string" },
+        "creatorId": { "type": "string" },
+        "customerEmail": { "type": "string" },
+        "customerName": { "type": "string" },
+        "amount": { "type": "number" },
+        "currency": { "type": "string" },
+        "status": { "type": "string", "enum": ["open", "paid", "expired", "failed"] },
+        "molliePaymentId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["id", "productId", "creatorId", "customerEmail", "amount", "currency", "status"]
+    }
+  },
+  "firestore": {
+    "/users/{uid}": {
+      "schema": "User",
+      "description": "User profile and settings."
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Products available for purchase."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Transaction records."
+    }
+  }
+}
