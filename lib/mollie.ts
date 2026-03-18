@@ -1,6 +1,17 @@
 import { createMollieClient } from '@mollie/api-client';
 
-export const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY || '' });
+let mollieClientInstance: any = null;
+
+export const getMollieClient = () => {
+  if (!mollieClientInstance) {
+    const apiKey = process.env.MOLLIE_API_KEY;
+    if (!apiKey) {
+      throw new Error('MOLLIE_API_KEY is not defined');
+    }
+    mollieClientInstance = createMollieClient({ apiKey });
+  }
+  return mollieClientInstance;
+};
 
 export const getMollieClientForUser = (accessToken: string) => {
   return createMollieClient({ accessToken });
